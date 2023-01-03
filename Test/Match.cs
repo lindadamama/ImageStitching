@@ -45,24 +45,19 @@ namespace Test
         {
             using var gray1 = new Mat();
             using var gray2 = new Mat();
-
             Cv2.CvtColor(src1, gray1, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(src2, gray2, ColorConversionCodes.BGR2GRAY);
-
             using var sift = SIFT.Create();
-
             // Detect the keypoints and generate their descriptors using SIFT
             using var descriptors1 = new Mat<float>();
             using var descriptors2 = new Mat<float>();
             sift.DetectAndCompute(gray1, null, out var keypoints1, descriptors1);
             sift.DetectAndCompute(gray2, null, out var keypoints2, descriptors2);
-
             // Match descriptor vectors
             using var bfMatcher = new BFMatcher(NormTypes.L2, false);
             using var flannMatcher = new FlannBasedMatcher();
             DMatch[] bfMatches = bfMatcher.Match(descriptors1, descriptors2);
             DMatch[] flannMatches = flannMatcher.Match(descriptors1, descriptors2);
-
             // Draw matches
             using var bfView = new Mat();
             Cv2.DrawMatches(gray1, keypoints1, gray2, keypoints2, bfMatches, bfView);
@@ -144,18 +139,14 @@ namespace Test
         {
             using var gray1 = new Mat();
             using var gray2 = new Mat();
-
             Cv2.CvtColor(src1, gray1, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(src2, gray2, ColorConversionCodes.BGR2GRAY);
-
             using var surf = SURF.Create(200, 4, 2, true);
-
             // Detect the keypoints and generate their descriptors using SURF
             using var descriptors1 = new Mat<float>();
             using var descriptors2 = new Mat<float>();
             surf.DetectAndCompute(gray1, null, out var keypoints1, descriptors1);
             surf.DetectAndCompute(gray2, null, out var keypoints2, descriptors2);
-
             // Match descriptor vectors 
             using var bfMatcher = new BFMatcher(NormTypes.L2, false);
             using var flannMatcher = new FlannBasedMatcher();
@@ -169,11 +160,7 @@ namespace Test
             Cv2.DrawMatches(gray1, keypoints1, gray2, keypoints2, flannMatches, flannView);
             Cv2.ImShow("SURF matching (by BFMather)", bfView);
             Cv2.ImShow("SURF matching (by FlannBasedMatcher)", flannView);
-            
             Cv2.WaitKey();
-
         }
-
     }
-
 }
